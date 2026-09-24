@@ -8,10 +8,10 @@
 ---
 
 ### 🗺️ Bản Đồ Tài Liệu Cho Buổi Lab (Đọc gì trước, đọc gì sau?):
-Đừng để nhiều file tài liệu làm bạn bị ngợp! Hãy tiếp cận theo thứ tự cực kỳ đơn giản sau:
-- 🚀 **Bắt tay vào làm ngay:** Mở [Hướng Dẫn Kỹ Thuật Chi Tiết (Guide.md)](Guide.md) và bám sát tiến trình [Các Mốc Thời Gian (CHECKPOINTS.md)](CHECKPOINTS.md).
-- 🎯 **Hiểu luật chơi & thang điểm:** Xem [Tiêu Chí Chấm Điểm (RUBRIC.md)](RUBRIC.md) và [Nội Quy Thực Hành (RULES.md)](RULES.md).
-- 📋 **Phân công & nộp bài cuối giờ:** Điền thông tin vào [Phân Công Nhóm (TEAM.md)](TEAM.md) và đối chiếu checklist tại [Hướng Dẫn Nộp Bài (SUBMISSION.md)](SUBMISSION.md).
+Đừng để nhiều file tài liệu làm bạn bị ngợp! Toàn bộ tài liệu chi tiết được quy hoạch gọn gàng trong thư mục [`docs/`](docs/):
+- 🚀 **Bắt tay vào làm ngay:** Mở [Hướng Dẫn Kỹ Thuật Chi Tiết (docs/Guide.md)](docs/Guide.md) và bám sát tiến trình [Các Mốc Thời Gian (docs/CHECKPOINTS.md)](docs/CHECKPOINTS.md).
+- 🎯 **Hiểu luật chơi & thang điểm:** Xem [Tiêu Chí Chấm Điểm (docs/RUBRIC.md)](docs/RUBRIC.md) và [Nội Quy Thực Hành (docs/RULES.md)](docs/RULES.md).
+- 📋 **Phân công & nộp bài cuối giờ:** Điền thông tin vào [Phân Công Nhóm (docs/TEAM.md)](docs/TEAM.md) và đối chiếu checklist tại [Hướng Dẫn Nộp Bài (docs/SUBMISSION.md)](docs/SUBMISSION.md).
 
 ---
 
@@ -116,16 +116,20 @@ Starter Repo được cấu trúc dạng module hóa rõ ràng:
 │   ├── evaluation/          <- testset.py (sinh đề thi), metrics.py (tính Hit rate, F1)
 │   ├── observability/       <- quality.py (Great Expectations 1.x), reporting.py
 │   └── pipelines/           <- phase1.py (điều phối baseline), corruption_flow.py
+├── docs/                    <- Thư mục tài liệu hướng dẫn, quy chuẩn và rubric của bài lab
+│   ├── Guide.md             <- Hướng dẫn kỹ thuật chi tiết từng bước
+│   ├── CHECKPOINTS.md       <- Tiến trình & nhiệm vụ từng mốc thời gian
+│   ├── RUBRIC.md            <- Tiêu chí chấm điểm chi tiết (100đ chuẩn + 10đ bonus)
+│   ├── RULES.md             <- Nội quy & liêm chính học thuật
+│   ├── SUBMISSION.md        <- Hướng dẫn nộp bài & checklist kiểm tra
+│   └── TEAM.md              <- Phân công nhóm & báo cáo cá nhân
 ├── .env.example             <- File mẫu cấu hình API key
-├── Guide.md                 <- Hướng dẫn kỹ thuật chi tiết từng bước
-├── RUBRIC.md                <- Tiêu chí chấm điểm chi tiết
-├── RULES.md                 <- Nội quy & liêm chính học thuật
-├── CHECKPOINTS.md           <- Tiến trình & nhiệm vụ từng mốc
+├── README.md                <- Tài liệu tổng quan bài lab & bản đồ chỉ dẫn
 └── pyproject.toml           <- Quản lý dependencies (Python 3.11-3.13)
 ```
 
 > ⚠️ **LƯU Ý VỀ CODE KHUNG:**  
-> Các file trong `src/` chứa các khối `TODO(student)` và `raise NotImplementedError`. Đây là bài tập thiết kế kỹ thuật, nhóm cần đọc kỹ docstring và hoàn thiện từng module theo thứ tự hướng dẫn trong [Guide.md](Guide.md).
+> Các file trong `src/` chứa các khối `TODO(student)` và `raise NotImplementedError`. Đây là bài tập thiết kế kỹ thuật, nhóm cần đọc kỹ docstring và hoàn thiện từng module theo thứ tự hướng dẫn trong [Guide.md](docs/Guide.md).
 
 ---
 

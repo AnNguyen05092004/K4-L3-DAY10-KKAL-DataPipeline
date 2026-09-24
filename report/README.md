@@ -189,7 +189,7 @@ Với môi trường `pip` đã được kích hoạt:
 python script/run_corruption_flow.py
 ```
 
-Repo hiện không cung cấp test hoặc grader tự động làm tiêu chí pass cuối cùng. Việc xác minh dựa trên lệnh pipeline, artifacts thực tế, metrics, báo cáo và [`RUBRIC.md`](../RUBRIC.md).
+Repo hiện không cung cấp test hoặc grader tự động làm tiêu chí pass cuối cùng. Việc xác minh dựa trên lệnh pipeline, artifacts thực tế, metrics, báo cáo và [`RUBRIC.md`](../docs/RUBRIC.md).
 
 Tối thiểu cần kiểm tra:
 

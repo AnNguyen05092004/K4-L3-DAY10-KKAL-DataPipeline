@@ -58,12 +58,14 @@ K4-L3-DAY10-TenNhom-DataPipeline/
 │   ├── run_phase1.py                        <- Entrypoint chạy Pha 1
 │   └── run_corruption_flow.py               <- Entrypoint chạy Pha 2
 ├── src/                                     <- Toàn bộ code hoàn thiện trong core/, ingestion/, retrieval/, evaluation/, observability/, pipelines/
-├── TEAM.md                                  <- Danh sách thành viên, MSSV & phần tự khai cá nhân
+├── docs/                                    <- Thư mục tài liệu hướng dẫn và quy chuẩn
+│   ├── Guide.md                             <- Hướng dẫn kỹ thuật chi tiết
+│   ├── CHECKPOINTS.md                       <- Lộ trình 7 checkpoints và cách tự kiểm tra
+│   ├── RUBRIC.md                            <- Tiêu chí chấm điểm
+│   ├── RULES.md                             <- Quy định học vụ và liêm chính học thuật
+│   ├── SUBMISSION.md                        <- Hướng dẫn nộp bài
+│   └── TEAM.md                              <- Danh sách thành viên, MSSV & phần tự khai cá nhân
 ├── README.md                                <- Đề bài và tài liệu tổng quan
-├── SUBMISSION.md                            <- Hướng dẫn nộp bài
-├── RUBRIC.md                                <- Tiêu chí chấm điểm
-├── CHECKPOINTS.md                           <- Lộ trình 7 checkpoints và cách tự kiểm tra
-└── RULES.md                                 <- Quy định học vụ và liêm chính học thuật
 ```
 
 ---
