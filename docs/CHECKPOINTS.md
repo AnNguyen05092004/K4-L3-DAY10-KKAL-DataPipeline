@@ -11,75 +11,38 @@
 
 | Checkpoint | Nội dung trọng tâm | Thời lượng gợi ý | Deliverables (Sản phẩm bàn giao) | Tín hiệu hoàn thành (Self-Verification) |
 | :--- | :--- | :--- | :--- | :--- |
-| **CP0** | Khởi tạo môi trường, cấu hình `.env`, kiểm tra thư viện | 0 - 30m (30') | Môi trường venv kích hoạt, file `.env` hợp lệ | Console in `Môi trường sẵn sàng` khi test import |
-| **CP1** | Ingestion & Bảo toàn dữ liệu gốc (Raw Preservation) | 30m - 60m (30') | `src/ingestion/crossref.py`, 2 raw JSON artifacts | 24 bản ghi raw được lưu, console in hoàn tất tải |
-| **CP2** | Data Cleaning & Chuẩn hóa ngữ cảnh `text_for_embedding` | 60m - 95m (35') | `src/ingestion/cleaning.py`, cleaned dataframe | Cleaned dataframe 24 dòng với cột `text_for_embedding` |
-| **CP3** | Data Observability với Great Expectations 1.x & Freshness | 95m - 140m (45') | `src/observability/quality.py`, GX suite & SLA checks | `run_data_quality_checks` trả về `success=True` |
-| **CP4** | Benchmark Test Set & ChromaDB Vector Store Indexing | 140m - 170m (30') | `src/evaluation/testset.py`, ChromaDB collection | Sinh 10 câu hỏi benchmark, ChromaDB index 24 docs |
-| **CP5** | Multi-Provider RAG Agent & Thực thi Baseline (Phase 1) | 170m - 205m (35') | `script/run_phase1.py`, `baseline_metrics.json`, report | Phase 1 sinh báo cáo markdown và baseline Hit Rate |
-| **CP6** | Data Corruption Suite, Repair & Báo cáo đối chiếu 3 trạng thái | 205m - 240m (35') | `src/ingestion/corruption.py`, `run_corruption_flow.py`, `corruption_report.md` | Bảng so sánh 3 trạng thái: Baseline vs Corrupted vs Repaired |
+| **CP0** | Khởi tạo môi trường, cấu hình `.env`, Ingestion raw data | 0 - 30m (30') | Môi trường venv kích hoạt, file `.env` hợp lệ, 2 raw JSON artifacts | Console in `Môi trường sẵn sàng`, tải đủ 24 bài báo |
+| **CP1** | Data Cleaning & Data Observability với Great Expectations 1.x & Freshness | 30m - 65m (35') | `src/ingestion/cleaning.py`, `src/observability/quality.py`, cleaned dataframe & GX suite | Clean dataframe 24 dòng có `text_for_embedding`, GX 1.x `success=True` |
+| **CP2** | Benchmark Test Set & ChromaDB Vector Store Indexing | 65m - 95m (30') | `src/evaluation/testset.py`, ChromaDB collection `papers-baseline` | Sinh bộ test set, ChromaDB index 24 docs |
+| **CP3** | Baseline Pipeline End-to-End & Báo Cáo Pha 1 | 95m - 120m (25') | `script/run_phase1.py`, `baseline_metrics.json`, `phase1_report.md` | Phase 1 sinh báo cáo markdown và baseline Hit Rate |
+| **CP4** | Synthetic Data Corruption Suite & Đo Lường Suy Giảm | 120m - 180m (60') | `src/ingestion/corruption.py`, `corruption_log.json`, `corrupted_metrics.json` | Tiêm 6 lỗi dữ liệu, đo lường sự sụt giảm của RAG |
+| **CP5** | Idempotent Repair, Báo Cáo Đối Chiếu 3 Trạng Thái & Nộp Bài | 180m - 240m (60') | `run_corruption_flow.py`, `corruption_report.md`, `repaired_metrics.json` | Bảng so sánh 3 trạng thái: Baseline vs Corrupted vs Repaired, push Git |
 
 ---
 
 ## Chi Tiết Yêu Cầu Từng Checkpoint
 
-### Checkpoint 0: Khởi tạo Môi trường & Cấu hình (30 phút)
-- **Mục tiêu:** Thiết lập workspace Python chuẩn hóa (Python 3.11 - 3.13), cài đặt đầy đủ dependencies qua `uv` hoặc `pip`.
+### Checkpoint 0: Khởi tạo Môi trường & Ingestion Raw Data (30 phút)
+- **Mục tiêu:** Thiết lập workspace Python chuẩn hóa (Python 3.11 - 3.13), cài đặt đầy đủ dependencies qua `uv` hoặc `pip`, thu thập dữ liệu metadata qua Crossref API và bảo toàn dữ liệu gốc.
 - **Nhiệm vụ:**
-  1. Tạo và kích hoạt virtual environment (`.venv`).
-  2. Cài đặt các gói phụ thuộc từ `requirements.txt` hoặc `pyproject.toml`.
-  3. Tạo file `.env` từ `.env.example`, điền API Key cần thiết (`GOOGLE_API_KEY`, `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, v.v.).
+  1. Tạo và kích hoạt virtual environment (`.venv`), cài đặt dependencies từ `pyproject.toml` hoặc `requirements.txt`.
+  2. Tạo file `.env` từ `.env.example`, điền API Key cần thiết (`GOOGLE_API_KEY`, v.v.).
+  3. Hoàn thiện hàm `parse_crossref_payload()` và logic tải trong `src/ingestion/crossref.py`, hỗ trợ cơ chế fallback đọc từ snapshot local `data/raw/crossref_response.json` khi mất mạng hoặc dính `429 Too Many Requests`.
+  4. Lưu 2 file raw artifacts: `data/raw/crossref_response.json` và `data/raw/crossref_records.json`.
 - **Tín hiệu nghiệm thu:**
   ```bash
   python -c "import chromadb, great_expectations, sentence_transformers; print('Môi trường sẵn sàng')"
-  ```
-  Console in ra đúng chuỗi `Môi trường sẵn sàng`.
-
----
-
-### Checkpoint 1: Ingestion & Raw Data Preservation (30 phút)
-- **Mục tiêu:** Thu thập dữ liệu metadata bài báo học thuật qua Crossref API và lưu trữ raw artifacts phục vụ data lineage.
-- **Nhiệm vụ:**
-  1. Xây dựng logic gọi API trong `src/ingestion/crossref.py`, hỗ trợ cơ chế fallback đọc từ snapshot local `data/raw/crossref_response.json` khi mất mạng hoặc dính `429 Too Many Requests`.
-  2. Parse các trường: `paper_id` (DOI), `title`, `summary` (làm sạch thẻ JATS XML `<jats:p>`), `authors`, `categories`, `published`.
-  3. Lưu 2 file raw artifacts:
-     - `data/raw/crossref_response.json`: Toàn bộ raw response từ API.
-     - `data/raw/crossref_records.json`: Danh sách đối tượng `PaperRecord` đã parse.
-- **Tín hiệu nghiệm thu:**
-  ```bash
   python -c "from core.config import load_settings; from ingestion.crossref import fetch_source_records; s=load_settings(); r=fetch_source_records(s); print(f'Tín hiệu hoàn thành: Đã tải {len(r)} bài báo')"
   ```
-  Console in ra `Tín hiệu hoàn thành: Đã tải 24 bài báo`.
+  Console in ra đúng chuỗi `Môi trường sẵn sàng` và `Tín hiệu hoàn thành: Đã tải 24 bài báo`.
 
 ---
 
-### Checkpoint 2: Data Cleaning & Pre-embed Modeling (35 phút)
-- **Mục tiêu:** Tiền xử lý, tính toán metadata bổ sung và tạo trường văn bản giàu ngữ cảnh phục vụ sinh vector.
+### Checkpoint 1: Data Cleaning & Data Observability với Great Expectations 1.x (35 phút)
+- **Mục tiêu:** Tiền xử lý, chuẩn hóa `text_for_embedding`, tính `age_days` và thiết lập chốt kiểm dịch chất lượng tự động theo chuẩn GX 1.x cùng Freshness SLA.
 - **Nhiệm vụ:**
-  1. Hoàn thiện hàm `build_clean_dataframe` trong `src/ingestion/cleaning.py`.
-  2. Loại bỏ khoảng trắng thừa, chuẩn hóa Unicode.
-  3. Tính toán tuổi dữ liệu: `age_days = (run_date - published).days`.
-  4. Khử trùng lặp bản ghi theo `paper_id`.
-  5. Xây dựng trường tổng hợp `text_for_embedding` theo mẫu:
-     ```text
-     Title: <Tiêu đề>
-     Authors: <Tác giả>
-     Published: <Ngày xuất bản>
-     Categories: <Lĩnh vực>
-     Summary: <Tóm tắt>
-     ```
-- **Tín hiệu nghiệm thu:**
-  ```bash
-  python -c "from datetime import datetime, timezone; from core.config import load_settings; from ingestion.crossref import load_raw_records; from ingestion.cleaning import build_clean_dataframe; s=load_settings(); df=build_clean_dataframe(load_raw_records(s.paths.raw_records_json), datetime.now(timezone.utc)); print(f'Tín hiệu hoàn thành: Clean thành công {len(df)} dòng')"
-  ```
-  Console in ra `Tín hiệu hoàn thành: Clean thành công 24 dòng`.
-
----
-
-### Checkpoint 3: Data Observability với Great Expectations 1.x & Freshness SLA (45 phút)
-- **Mục tiêu:** Áp dụng công nghệ Data Observability hiện đại, thiết lập bộ kiểm định chất lượng tự động theo chuẩn Great Expectations 1.x và đo lường Freshness SLA.
-- **Nhiệm vụ:**
-  1. Cấu hình ephemeral context của Great Expectations 1.x trong `src/observability/quality.py`:
+  1. Hoàn thiện hàm `build_clean_dataframe` trong `src/ingestion/cleaning.py`: khử trùng lặp theo `paper_id`, tính `age_days = (run_date - published).days`, ghép `text_for_embedding`.
+  2. Cấu hình ephemeral context của Great Expectations 1.x trong `src/observability/quality.py`:
      ```python
      context = gx.get_context(mode="ephemeral")
      data_source = context.data_sources.add_pandas(name="papers_source")
@@ -87,50 +50,48 @@
      batch_def = data_asset.add_batch_definition_whole_dataframe("papers_batch")
      batch = batch_def.get_batch(batch_parameters={"dataframe": df})
      ```
-  2. Định nghĩa các Expectation thiết yếu:
-     - `ExpectTableRowCountToBeBetween`: Số dòng từ 5 đến 5000.
-     - `ExpectColumnValuesToNotBeNull`: Các cột `paper_id`, `title`, `text_for_embedding` không được null.
-     - `ExpectColumnValuesToBeUnique`: `paper_id` là định danh duy nhất.
-     - `ExpectColumnValueLengthsToBeBetween`: Trường `summary` có độ dài tối thiểu 30 ký tự.
-  3. Tính toán Freshness SLA: Cảnh báo `is_fresh = False` nếu tỷ lệ bài báo có `age_days > 180` vượt quá 25%.
+  3. Định nghĩa 4 Expectations thiết yếu: `ExpectTableRowCountToBeBetween`, `ExpectColumnValuesToNotBeNull`, `ExpectColumnValuesToBeUnique`, `ExpectColumnValueLengthsToBeBetween`.
+  4. Tính toán Freshness SLA: Cảnh báo `is_fresh = False` nếu tỷ lệ bài báo có `age_days > 180` vượt quá 25%.
 - **Tín hiệu nghiệm thu:**
   ```bash
-  python -c "from core.config import load_settings; from observability.quality import run_data_quality_checks; import pandas as pd; s=load_settings(); df=pd.read_json(s.paths.clean_json); res=run_data_quality_checks(df, s, 'test'); print(f'Tín hiệu hoàn thành: Quality check status = {res["success"]}')"
+  python -c "from datetime import datetime, timezone; from core.config import load_settings; from ingestion.crossref import load_raw_records; from ingestion.cleaning import build_clean_dataframe; s=load_settings(); df=build_clean_dataframe(load_raw_records(s.paths.raw_records_json), datetime.now(timezone.utc)); print(f'Tín hiệu hoàn thành: Clean thành công {len(df)} dòng')"
+  python -c "from core.config import load_settings; from observability.quality import run_data_quality_checks; import pandas as pd; s=load_settings(); df=pd.read_json(s.paths.clean_json); res=run_data_quality_checks(df, s, 'test'); print(f'Tín hiệu hoàn thành: Quality check status = {res[\"success\"]}')"
   ```
-  Console in ra `Tín hiệu hoàn thành: Quality check status = True`.
+  Console in ra `Tín hiệu hoàn thành: Clean thành công 24 dòng` và `Tín hiệu hoàn thành: Quality check status = True`.
 
 ---
 
-### Checkpoint 4: Benchmark Test Set & Vector Store Indexing (30 phút)
-- **Mục tiêu:** Xây dựng bộ test đánh giá chuẩn hóa gồm 10 câu hỏi qua 4 nhóm nghiệp vụ và đánh chỉ mục vector trên ChromaDB.
+### Checkpoint 2: Benchmark Test Set & ChromaDB Vector Store Indexing (30 phút)
+- **Mục tiêu:** Xây dựng bộ test đánh giá chuẩn hóa gồm các câu hỏi qua 4 nhóm nghiệp vụ và đánh chỉ mục vector trên ChromaDB.
 - **Nhiệm vụ:**
   1. Viết logic sinh câu hỏi đánh giá trong `src/evaluation/testset.py` phủ đủ 4 nhóm: `summary`, `authors`, `date`, `categories`.
-  2. Lưu kết quả ra file `data/eval/eval_testset.json`.
-  3. Khởi tạo ChromaDB collection, nạp vector embedding sinh từ `all-MiniLM-L6-v2` cho toàn bộ các tài liệu sạch.
+  2. Lưu kết quả ra file `data/eval/test_set.json`.
+  3. Khởi tạo ChromaDB collection `papers-baseline`, nạp vector embedding sinh từ `all-MiniLM-L6-v2` cho toàn bộ các tài liệu sạch.
 - **Tín hiệu nghiệm thu:**
   ```bash
-  python -c "from core.config import load_settings; from evaluation.testset import build_test_set; import pandas as pd; s=load_settings(); df=pd.read_json(s.paths.clean_json); ts=build_test_set(df, s.paths.eval_testset); print(f'Tín hiệu hoàn thành: Sinh được {len(ts)} câu hỏi test')"
+  python -c "from core.config import load_settings; from evaluation.testset import load_or_create_test_set; import pandas as pd; s=load_settings(); df=pd.read_json(s.paths.clean_json); ts=load_or_create_test_set(df, s.paths.test_set_json); print(f'Tín hiệu hoàn thành: Test set gồm {len(ts.samples)} câu hỏi')"
   ```
-  Console in ra `Tín hiệu hoàn thành: Sinh được 10 câu hỏi test`.
+  Console in ra `Tín hiệu hoàn thành: Test set gồm 5 câu hỏi`.
 
 ---
 
-### Checkpoint 5: Multi-Provider RAG Agent & Thực thi Baseline Phase 1 (35 phút)
-- **Mục tiêu:** Chạy end-to-end chu trình dữ liệu sạch, kiểm thử RAG Agent đa nhà cung cấp và đo lường chỉ số nền (Baseline).
+### Checkpoint 3: Baseline Pipeline End-to-End & Báo Cáo Pha 1 (25 phút)
+- **Mục tiêu:** Chạy end-to-end chu trình dữ liệu sạch, kiểm thử RAG Agent và đo lường chỉ số nền (Baseline Benchmarks).
 - **Nhiệm vụ:**
-  1. Hoàn thiện Router Agent hỗ trợ fallback đa provider (`mock`, `google`, `openai`, `anthropic`).
-  2. Chạy kịch bản `python script/run_phase1.py`.
-  3. Kiểm tra các artifact sinh ra:
+  1. Hoàn thiện liên kết trong `src/pipelines/phase1.py` và chạy kịch bản `python script/run_phase1.py`.
+  2. Kiểm tra các artifact sinh ra:
      - `data/clean/papers_clean.csv` & `data/clean/papers_clean.json`
+     - `data/chroma/` (vector database nạp dữ liệu sạch)
+     - `data/eval/test_set.json`
      - `data/results/baseline_metrics.json`
      - `data/reports/phase1_report.md`
 - **Tín hiệu nghiệm thu:**
-  File `data/results/baseline_metrics.json` xuất hiện với các chỉ số `hit_rate > 0.8` và `token_f1 > 0.6`.
+  File `data/results/baseline_metrics.json` xuất hiện với các chỉ số `retrieval_hit_rate` và `mean_token_f1`, báo cáo `data/reports/phase1_report.md` được sinh ra hoàn chỉnh.
 
 ---
 
-### Checkpoint 6: Data Corruption Suite, Repair Flow & Báo Cáo Đối Chiếu (35 phút)
-- **Mục tiêu:** Giả lập sự cố dữ liệu bẩn trong sản xuất, đo lường sự sụp đổ của RAG Agent, thực thi cơ chế sửa chữa (repair) và lập báo cáo so sánh 3 trạng thái.
+### Checkpoint 4: Synthetic Data Corruption & Đo Lường Suy Giảm (60 phút)
+- **Mục tiêu:** Giả lập sự cố dữ liệu bẩn trong sản xuất bằng cách tiêm 6 kịch bản lỗi, chứng minh Data Quality Gate báo động và Agent suy giảm chất lượng (Silent Failure).
 - **Nhiệm vụ:**
   1. Triển khai 6 kịch bản làm bẩn dữ liệu trong `src/ingestion/corruption.py`:
      - Drop latest records (mất 20% bản ghi mới).
@@ -139,10 +100,22 @@
      - Truncate title (cắt ngắn tiêu đề < 8 ký tự).
      - Stale date (lùi ngày xuất bản về quá khứ).
      - Duplicate rows (nhân bản dữ liệu).
+  2. Ghi log chi tiết vào `data/results/corruption_log.json`.
+  3. Đo lường sự sụt giảm chất lượng retrieval và câu trả lời của RAG trên tập dữ liệu bị tiêm lỗi, ghi ra `data/results/corrupted_metrics.json`.
+- **Tín hiệu nghiệm thu:**
+  Tồn tại `data/results/corruption_log.json` ghi nhận đầy đủ 6 dạng lỗi và file `data/results/corrupted_metrics.json` phản ánh rõ rệt sự sụt giảm chỉ số so với baseline.
+
+---
+
+### Checkpoint 5: Idempotent Repair, Đối Chiếu 3 Trạng Thái & Nộp Bài (60 phút)
+- **Mục tiêu:** Tự động kích hoạt cơ chế phục hồi dữ liệu an toàn (Idempotent Repair) từ nguồn Raw đáng tin cậy, lập báo cáo so sánh định lượng 3 trạng thái và hoàn tất nộp bài.
+- **Nhiệm vụ:**
+  1. Thực thi luồng khôi phục dữ liệu sạch từ bản lưu trữ thô ban đầu `data/raw/crossref_records.json` (hoặc `crossref_response.json`).
   2. Chạy toàn bộ pipeline kiểm chứng qua lệnh:
      ```bash
      python script/run_corruption_flow.py
      ```
-  3. Xuất báo cáo đối chiếu chi tiết tại `data/reports/corruption_report.md` với bảng so sánh rõ ràng: Baseline vs Corrupted vs Repaired.
+  3. Xuất báo cáo đối chiếu chi tiết tại `data/reports/corruption_report.md` với bảng so sánh rõ ràng 3 trạng thái: **Baseline vs Corrupted vs Repaired**.
+  4. Rà soát checklist, push code lên GitHub nhánh `main` và nộp link repository lên VLearn LMS.
 - **Tín hiệu nghiệm thu:**
-  Console in ra bảng so sánh hiệu năng 3 trạng thái và file `data/reports/corruption_report.md` chứa đầy đủ phân tích nguyên nhân - giải pháp.
+  Console in ra bảng so sánh hiệu năng 3 trạng thái, file `data/reports/corruption_report.md` có đầy đủ 3 cột so sánh chứng minh AI lấy lại phong độ sau khi phục hồi dữ liệu, toàn bộ thành viên xuất hiện trên Insights > Contributors của GitHub nhánh `main`.

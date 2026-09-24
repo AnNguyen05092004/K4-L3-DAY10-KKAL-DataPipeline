@@ -66,7 +66,7 @@ Nguồn Crossref API (hoặc Snapshot Offline data/raw/)
 
 ## 3. KHUNG THỜI GIAN THỰC CHIẾN 240 PHÚT (4 TIẾNG)
 
-Buổi thực hành được chia thành **7 Checkpoints chuẩn hóa** theo timeline 240 phút (tương thích tuyệt đối với Slide trình chiếu của Giảng viên):
+Buổi thực hành được chia thành **6 Checkpoints chuẩn hóa (CP0 – CP5)** theo timeline 240 phút (tương thích tuyệt đối với Slide trình chiếu của Giảng viên):
 
 ```mermaid
 timeline
@@ -75,9 +75,8 @@ timeline
     Phút 30 - 65  : CP1 - Cleaning, Data Model & Quality Gate (GX 1.x)
     Phút 65 - 95  : CP2 - Test Set, RAG Index & Smoke Test
     Phút 95 - 120 : CP3 - Baseline Pipeline End-to-End & Báo Cáo Pha 1
-    Phút 120 - 135: GIẢI LAO - Nghỉ 15 phút giữa giờ
-    Phút 135 - 195: CP5 - Synthetic Corruption & Đo Lường Suy Giảm
-    Phút 195 - 240: CP6 - Idempotent Repair, Đối Chiếu 3 Trạng Thái & Nộp Bài
+    Phút 120 - 180: CP4 - Synthetic Corruption & Đo Lường Suy Giảm
+    Phút 180 - 240: CP5 - Idempotent Repair, Đối Chiếu 3 Trạng Thái & Nộp Bài
 ```
 
 | Checkpoint | Thời lượng | Trọng tâm công việc | Đầu ra bắt buộc (Pass Signal) |
@@ -86,9 +85,8 @@ timeline
 | **CP1** | Phút 30 – 65 (35m) | Chuẩn hóa schema, tính `age_days`, dựng Quality Gate GX 1.x | `data/clean/papers_clean.csv`, GX 1.x validation `True` |
 | **CP2** | Phút 65 – 95 (30m) | Build MiniLM embedding, nạp ChromaDB, sinh `test_set.json` | `data/eval/test_set.json`, Chroma collection `papers-baseline` |
 | **CP3** | Phút 95 – 120 (25m) | Chạy Baseline end-to-end, đo Hit Rate & Token F1 | `baseline_metrics.json`, `data/reports/phase1_report.md` |
-| **Nghỉ** | Phút 120 – 135 (15m) | Giải lao 15 phút, thảo luận kịch bản corruption | Giữ nguyên trạng thái baseline, sẵn sàng pha 2 |
-| **CP5** | Phút 135 – 195 (60m) | Tiêm 6 lỗi dữ liệu, đo lường sự sụt giảm của RAG | `corruption_log.json`, `corrupted_metrics.json` |
-| **CP6** | Phút 195 – 240 (45m) | Re-run repair từ raw data, xuất báo cáo đối chiếu 3 trạng thái | `corruption_report.md` (đủ 3 cột so sánh), push Git |
+| **CP4** | Phút 120 – 180 (60m) | Tiêm 6 lỗi dữ liệu, đo lường sự sụt giảm của RAG | `corruption_log.json`, `corrupted_metrics.json` |
+| **CP5** | Phút 180 – 240 (60m) | Re-run repair từ raw data, xuất báo cáo đối chiếu 3 trạng thái & nộp bài | `corruption_report.md` (đủ 3 cột so sánh), push Git |
 
 ---
 
@@ -108,7 +106,7 @@ Starter Repo được cấu trúc dạng module hóa rõ ràng:
 │   └── results/             <- File JSON ghi nhận chỉ số (baseline, corrupted, repaired)
 ├── script/
 │   ├── run_phase1.py        <- Entrypoint chạy toàn bộ Baseline Pipeline (CP3)
-│   └── run_corruption_flow.py <- Entrypoint chạy Corruption, Repair & Comparison (CP5-CP6)
+│   └── run_corruption_flow.py <- Entrypoint chạy Corruption, Repair & Comparison (CP4-CP5)
 ├── src/
 │   ├── core/                <- Cấu hình đường dẫn Paths, settings và utils
 │   ├── ingestion/           <- crossref.py (lấy data), cleaning.py (làm sạch), corruption.py (tiêm lỗi)
@@ -204,7 +202,7 @@ GOOGLE_API_KEY=your_gemini_api_key_here
 
 ---
 
-### 📋 Checklist Nghiệm thu & Điều kiện nộp bài (Checkpoint 6):
+### 📋 Checklist Nghiệm thu & Điều kiện nộp bài (Checkpoint 5):
 
 - [ ] **Môi trường:** Chạy lệnh smoke test in ra `Môi trường sẵn sàng`.
 - [ ] **Pha 1 (Baseline):** Lệnh `python script/run_phase1.py` chạy trơn tru, sinh đầy đủ:

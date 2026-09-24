@@ -60,7 +60,7 @@ K4-L3-DAY10-TenNhom-DataPipeline/
 ├── src/                                     <- Toàn bộ code hoàn thiện trong core/, ingestion/, retrieval/, evaluation/, observability/, pipelines/
 ├── docs/                                    <- Thư mục tài liệu hướng dẫn và quy chuẩn
 │   ├── Guide.md                             <- Hướng dẫn kỹ thuật chi tiết
-│   ├── CHECKPOINTS.md                       <- Lộ trình 7 checkpoints và cách tự kiểm tra
+│   ├── CHECKPOINTS.md                       <- Lộ trình 6 checkpoints và cách tự kiểm tra
 │   ├── RUBRIC.md                            <- Tiêu chí chấm điểm
 │   ├── RULES.md                             <- Quy định học vụ và liêm chính học thuật
 │   ├── SUBMISSION.md                        <- Hướng dẫn nộp bài
