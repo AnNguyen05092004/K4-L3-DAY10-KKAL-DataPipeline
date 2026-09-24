@@ -15,8 +15,9 @@
 | **CP1** | Data Cleaning & Data Observability với Great Expectations 1.x & Freshness | 30m - 65m (35') | `src/ingestion/cleaning.py`, `src/observability/quality.py`, cleaned dataframe & GX suite | Clean dataframe 24 dòng có `text_for_embedding`, GX 1.x `success=True` |
 | **CP2** | Benchmark Test Set & ChromaDB Vector Store Indexing | 65m - 95m (30') | `src/evaluation/testset.py`, ChromaDB collection `papers-baseline` | Sinh bộ test set, ChromaDB index 24 docs |
 | **CP3** | Baseline Pipeline End-to-End & Báo Cáo Pha 1 | 95m - 120m (25') | `script/run_phase1.py`, `baseline_metrics.json`, `phase1_report.md` | Phase 1 sinh báo cáo markdown và baseline Hit Rate |
-| **CP4** | Synthetic Data Corruption Suite & Đo Lường Suy Giảm | 120m - 180m (60') | `src/ingestion/corruption.py`, `corruption_log.json`, `corrupted_metrics.json` | Tiêm 6 lỗi dữ liệu, đo lường sự sụt giảm của RAG |
-| **CP5** | Idempotent Repair, Báo Cáo Đối Chiếu 3 Trạng Thái & Nộp Bài | 180m - 240m (60') | `run_corruption_flow.py`, `corruption_report.md`, `repaired_metrics.json` | Bảng so sánh 3 trạng thái: Baseline vs Corrupted vs Repaired, push Git |
+| **CP4** | Synthetic Data Corruption Suite & Đo Lường Suy Giảm | 120m - 165m (45') | `src/ingestion/corruption.py`, `corruption_log.json`, `corrupted_metrics.json` | Tiêm 6 lỗi dữ liệu, đo lường sự sụt giảm của RAG |
+| **CP5** | Idempotent Repair & Báo Cáo Đối Chiếu 3 Trạng Thái | 165m - 210m (45') | `run_corruption_flow.py`, `corruption_report.md`, `repaired_metrics.json` | Bảng so sánh 3 trạng thái: Baseline vs Corrupted vs Repaired |
+| **CP6** | Live Demo Trên Bảng, Q&A & Nghiệm Thu Nộp Bài | 210m - 240m (30') | Trình diễn luồng phục hồi trực tiếp trên bảng, phản biện Q&A, nộp link LMS | Nhóm bảo vệ thành công trước lớp, 100% commit nhánh `main`, nộp link LMS |
 
 ---
 
@@ -90,7 +91,7 @@
 
 ---
 
-### Checkpoint 4: Synthetic Data Corruption & Đo Lường Suy Giảm (60 phút)
+### Checkpoint 4: Synthetic Data Corruption & Đo Lường Suy Giảm (45 phút)
 - **Mục tiêu:** Giả lập sự cố dữ liệu bẩn trong sản xuất bằng cách tiêm 6 kịch bản lỗi, chứng minh Data Quality Gate báo động và Agent suy giảm chất lượng (Silent Failure).
 - **Nhiệm vụ:**
   1. Triển khai 6 kịch bản làm bẩn dữ liệu trong `src/ingestion/corruption.py`:
@@ -107,8 +108,8 @@
 
 ---
 
-### Checkpoint 5: Idempotent Repair, Đối Chiếu 3 Trạng Thái & Nộp Bài (60 phút)
-- **Mục tiêu:** Tự động kích hoạt cơ chế phục hồi dữ liệu an toàn (Idempotent Repair) từ nguồn Raw đáng tin cậy, lập báo cáo so sánh định lượng 3 trạng thái và hoàn tất nộp bài.
+### Checkpoint 5: Idempotent Repair & Báo Cáo Đối Chiếu 3 Trạng Thái (45 phút)
+- **Mục tiêu:** Tự động kích hoạt cơ chế phục hồi dữ liệu an toàn (Idempotent Repair) từ nguồn Raw đáng tin cậy, lập báo cáo so sánh định lượng 3 trạng thái.
 - **Nhiệm vụ:**
   1. Thực thi luồng khôi phục dữ liệu sạch từ bản lưu trữ thô ban đầu `data/raw/crossref_records.json` (hoặc `crossref_response.json`).
   2. Chạy toàn bộ pipeline kiểm chứng qua lệnh:
@@ -116,6 +117,19 @@
      python script/run_corruption_flow.py
      ```
   3. Xuất báo cáo đối chiếu chi tiết tại `data/reports/corruption_report.md` với bảng so sánh rõ ràng 3 trạng thái: **Baseline vs Corrupted vs Repaired**.
-  4. Rà soát checklist, push code lên GitHub nhánh `main` và nộp link repository lên VLearn LMS.
 - **Tín hiệu nghiệm thu:**
-  Console in ra bảng so sánh hiệu năng 3 trạng thái, file `data/reports/corruption_report.md` có đầy đủ 3 cột so sánh chứng minh AI lấy lại phong độ sau khi phục hồi dữ liệu, toàn bộ thành viên xuất hiện trên Insights > Contributors của GitHub nhánh `main`.
+  Console in ra bảng so sánh hiệu năng 3 trạng thái, file `data/reports/corruption_report.md` có đầy đủ 3 cột so sánh chứng minh AI lấy lại phong độ sau khi phục hồi dữ liệu.
+
+---
+
+### Checkpoint 6: Live Demo Trên Bảng, Q&A & Nghiệm Thu Nộp Bài (30 phút)
+- **Mục tiêu:** Các nhóm lần lượt lên bảng trình diễn (Live Demo) quy trình phát hiện dữ liệu bẩn và cơ chế tự phục hồi trước Giảng viên & cả lớp, phản biện Q&A, đối chiếu checklist và hoàn tất nộp bài.
+- **Nhiệm vụ:**
+  1. Chuẩn bị terminal và artifacts: sẵn sàng chạy demo trực tiếp `run_phase1.py` và `run_corruption_flow.py`.
+  2. Đại diện nhóm lên bảng (3-5 phút/nhóm):
+     - Trình chiếu bảng đối chiếu 3 trạng thái: Baseline vs Corrupted vs Repaired từ `corruption_report.md`.
+     - Chỉ ra hiện tượng Silent Failure khi RAG bị tiêm lỗi dữ liệu và sự phục hồi sau khi chạy Repair.
+     - Trả lời các câu hỏi chất vấn kỹ thuật từ Giảng viên & Trợ giảng (GX 1.x, Freshness SLA, vector embeddings, tính Idempotent).
+  3. Rà soát checklist cuối giờ, đảm bảo 100% thành viên có commit trên GitHub nhánh `main` (Insights > Contributors) và nộp link repository lên VLearn LMS trước 23:59:59.
+- **Tín hiệu nghiệm thu:**
+  Bảo vệ thành công phần Live Demo trên bảng, toàn bộ thành viên xuất hiện trên Insights > Contributors của GitHub nhánh `main` và đã submit link bài tập lên LMS.
