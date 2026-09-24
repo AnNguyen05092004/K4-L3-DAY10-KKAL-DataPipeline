@@ -3,17 +3,15 @@
 > **Hình thức thực hiện:** Làm việc theo nhóm (Teamwork)  
 > **Thời lượng:** 240 phút (4 giờ)  
 > **Thời hạn nộp bài:** 23:59:59 ngày diễn ra bài lab (hoặc theo thông báo trên LMS)  
-> **Lưu ý quan trọng:** Dù làm theo nhóm và nộp chung 1 repo GitHub, **mỗi cá nhân đều bắt buộc phải nộp link repo lên VLearn LMS** bằng tài khoản cá nhân.
+> 🔔 **Lưu ý vui nhưng cực kỳ quan trọng:** Dù nhóm làm chung một Repo GitHub, nhưng khi hết giờ, **từng cá nhân vẫn phải tự tay nộp đường link repo lên VLearn LMS** bằng tài khoản của mình nhé. Đừng để cả nhóm điểm 10 mà mình bị điểm 0 vì quên bấm nút submit!
 
 ---
 
-### 📚 Bộ Tài Liệu Quy Chuẩn Bắt Buộc Cần Đọc:
-1. 📋 [Hướng Dẫn Nộp Bài & Checklist Kiểm Tra (SUBMISSION.md)](SUBMISSION.md)
-2. 🏆 [Tiêu Chí Chấm Điểm Chuẩn 100 + Bonus (RUBRIC.md)](RUBRIC.md)
-3. ⏱️ [Tiến Trình & Nhiệm Vụ Từng Checkpoint (CHECKPOINTS.md)](CHECKPOINTS.md)
-4. ⚖️ [Nội Quy & Liêm Chính Học Thuật (RULES.md)](RULES.md)
-5. 👥 [Phân Công Nhóm & Báo Cáo Cá Nhân (TEAM.md)](TEAM.md)
-6. 🛠️ [Hướng Dẫn Kỹ Thuật Chi Tiết Từng Bước (Guide.md)](Guide.md)
+### 🗺️ Bản Đồ Tài Liệu Cho Buổi Lab (Đọc gì trước, đọc gì sau?):
+Đừng để nhiều file tài liệu làm bạn bị ngợp! Hãy tiếp cận theo thứ tự cực kỳ đơn giản sau:
+- 🚀 **Bắt tay vào làm ngay:** Mở [Hướng Dẫn Kỹ Thuật Chi Tiết (Guide.md)](Guide.md) và bám sát tiến trình [Các Mốc Thời Gian (CHECKPOINTS.md)](CHECKPOINTS.md).
+- 🎯 **Hiểu luật chơi & thang điểm:** Xem [Tiêu Chí Chấm Điểm (RUBRIC.md)](RUBRIC.md) và [Nội Quy Thực Hành (RULES.md)](RULES.md).
+- 📋 **Phân công & nộp bài cuối giờ:** Điền thông tin vào [Phân Công Nhóm (TEAM.md)](TEAM.md) và đối chiếu checklist tại [Hướng Dẫn Nộp Bài (SUBMISSION.md)](SUBMISSION.md).
 
 ---
 
@@ -23,25 +21,25 @@
 > Kết quả: Agent tiếp tục tư vấn chính sách cũ rích suốt 3 tuần, cho đến khi khách hàng làm ầm lên đòi kiện doanh nghiệp."*
 
 ### ⚠️ Hiểm họa Silent Failure: Khi AI giỏi đến đâu cũng trở nên vô nghĩa!
-Trong kỹ thuật phần mềm truyền thống, nếu một hàm gặp lỗi, nó sẽ ném ra ngoại lệ (`throw Exception`) và dừng chương trình. Nhưng với AI Agent & RAG, khi **Data Pipeline bị lỗi**:
-- **Ingestion fail:** Dữ liệu mới không vào kho $\rightarrow$ Agent trả lời bằng kiến thức lỗi thời (**Stale Data**).
-- **Transform/Cleaning sai:** Thiếu metadata, text bị nhiễu $\rightarrow$ Retriever truy vấn sai tài liệu.
-- **Index lỗi:** Chunk bị trùng lặp (**Duplicates**) $\rightarrow$ Ngữ cảnh bị bóp méo, làm loãng LLM.
+Trong kỹ thuật phần mềm truyền thống, nếu một hàm gặp lỗi, nó sẽ lập tức báo lỗi đỏ (`throw Exception`) và dừng chương trình. Chúng ta biết ngay chỗ sai để sửa. Nhưng với AI Agent & RAG, khi **Data Pipeline bị lỗi**:
+- **Lấy thiếu dữ liệu (Ingestion fail):** Dữ liệu mới không vào kho $\rightarrow$ Agent trả lời bằng kiến thức lỗi thời (**Stale Data**).
+- **Làm sạch sai (Cleaning fail):** Thiếu thông tin, câu chữ bị nhiễu $\rightarrow$ Bộ tìm kiếm lấy nhầm tài liệu.
+- **Lưu trữ lỗi (Duplicate index):** Dữ liệu bị trùng lặp $\rightarrow$ Ngữ cảnh bị bóp méo, làm loãng câu trả lời của AI.
 
-Đáng sợ nhất là: **Agent KHÔNG hề báo lỗi đỏ!** Nó vẫn trả lời một cách tự tin, trôi chảy — chỉ là **trả lời sai sự thật (Hallucination)**. Đó chính là **Silent Failure (Thất bại thầm lặng)**.
+Đáng sợ nhất là: **Agent KHÔNG hề báo lỗi đỏ!** Nó vẫn trả lời một cách tự tin, trôi chảy — chỉ là **trả lời sai sự thật (Hallucination)**. Đó chính là **Silent Failure (Thất bại thầm lặng)** — căn bệnh nguy hiểm nhất của các hệ thống AI ứng dụng thực tế.
 
 ---
 
 ### 🎯 Sứ mệnh của bạn trong bài Lab này:
-Thực tế sản phẩm AI: **60% – 80% thời gian của một dự án AI là xử lý dữ liệu, không phải tinh chỉnh model!** *"Garbage In $\rightarrow$ Garbage Out"*. 
+Thực tế sản phẩm AI: **60% – 80% thời gian của một dự án AI là xử lý dữ liệu, không phải tinh chỉnh model!** *"Garbage In $\rightarrow$ Garbage Out"* (Dữ liệu rác vào thì kết quả rác ra). 
 
-Bạn và nhóm sẽ đóng vai trò **Kỹ sư Nền tảng Dữ liệu & MLOps**, xây dựng một Data Pipeline chuẩn công nghiệp cho dữ liệu bài báo khoa học từ **Crossref Academic API**, tích hợp "chiếc khiên chắn" **Data Quality Gate** bằng **Great Expectations 1.x** để chặn đứng dữ liệu xấu trước khi nó kịp lọt vào Vector Store (ChromaDB).
+Bạn và nhóm sẽ đóng vai trò **Kỹ sư Dữ liệu & MLOps thực chiến**, xây dựng một Data Pipeline chuẩn chỉnh cho dữ liệu bài báo khoa học từ **Crossref Academic API**, tích hợp "chốt kiểm dịch dữ liệu" (**Data Quality Gate**) bằng **Great Expectations 1.x** để chặn đứng dữ liệu xấu trước khi nó kịp lọt vào Vector Store (ChromaDB).
 
-Hệ thống phải vượt qua bài kiểm tra khắc nghiệt:
-1. **Baseline Flow:** Thu thập dữ liệu sạch, làm sạch chuẩn hóa, kiểm định chất lượng, nạp vào ChromaDB và đo lường độ chính xác ban đầu (Hit Rate, Token F1, LLM Judge).
-2. **Controlled Corruption:** Chủ động "tiêm" 6 dạng độc tố dữ liệu (drop bản ghi mới, xóa summary, chèn ký tự rác, cắt ngắn tiêu đề, làm cũ ngày tháng, nhân bản dòng).
-3. **Observability Alert:** Chứng minh Data Quality Gate và Freshness SLA lập tức phát hiện và gióng chuông cảnh báo.
-4. **Idempotent Repair:** Phục hồi dữ liệu tự động từ Raw Snapshot (không sửa tay), đối chiếu định lượng sự hồi phục trên cả 3 trạng thái: **Baseline vs Corrupted vs Repaired**.
+Hệ thống phải vượt qua bài kiểm tra toàn diện:
+1. **Luồng dữ liệu sạch (Baseline Flow):** Thu thập dữ liệu chuẩn, làm sạch, kiểm định chất lượng, nạp vào ChromaDB và đo lường độ chính xác ban đầu (Hit Rate, Token F1, LLM Judge).
+2. **Thử thách tiêm lỗi (Controlled Corruption):** Chủ động "tiêm" 6 dạng lỗi dữ liệu thực tế (bỏ rơi bản ghi mới, xóa tóm tắt, chèn ký tự rác, cắt ngắn tiêu đề, làm cũ ngày tháng, nhân bản dòng).
+3. **Cảnh báo chất lượng (Observability Alert):** Chứng minh Data Quality Gate và cơ chế giám sát độ tươi (Freshness Check) lập tức phát hiện và gióng chuông cảnh báo.
+4. **Phục hồi an toàn (Idempotent Repair):** Tự động hồi phục dữ liệu từ bản sao lưu thô ban đầu (chạy lại bao nhiêu lần kết quả vẫn chuẩn sạch, không cần sửa tay), đối chiếu sự hồi phục trên cả 3 trạng thái: **Dữ liệu Sạch vs Dữ liệu Lỗi vs Sau Phục Hồi**.
 
 ---
 
@@ -50,19 +48,19 @@ Hệ thống phải vượt qua bài kiểm tra khắc nghiệt:
 ### 2.1. Kiến trúc luồng dữ liệu 7 tầng:
 
 ```text
-Crossref API (hoặc Snapshot Offline data/raw/)
-    ├── 1. Ingestion & Raw Lineage   -> data/raw/crossref_records.json
-    ├── 2. Transformation & Clean    -> data/clean/papers_clean.csv
-    ├── 3. Data Observability Gate   -> Great Expectations 1.x & Freshness SLA
-    ├── 4. Vector Store & Index      -> sentence-transformers + ChromaDB
-    ├── 5. Evaluation Benchmarking   -> Hit Rate, Token F1, LLM Judge Score
-    ├── 6. Synthetic Data Corruption -> Tiêm 6 kịch bản lỗi có chủ đích
-    └── 7. Idempotent Repair         -> Tái tạo từ Raw & Xuất Báo Cáo 3 Trạng Thái
+Nguồn Crossref API (hoặc Snapshot Offline data/raw/)
+    ├── 1. Kéo dữ liệu & Lưu bản gốc (Raw Preservation) -> data/raw/crossref_records.json
+    ├── 2. Làm sạch & Chuẩn hóa (Transformation)        -> data/clean/papers_clean.csv
+    ├── 3. Trạm kiểm soát chất lượng (Quality Gate)     -> Great Expectations 1.x & Freshness
+    ├── 4. Nhúng ngữ nghĩa & Lưu Vector (Index)         -> sentence-transformers + ChromaDB
+    ├── 5. Đánh giá chất lượng RAG (Benchmark)          -> Hit Rate, Token F1, LLM Judge Score
+    ├── 6. Thử thách tiêm độc tố dữ liệu (Corruption)   -> Giả lập 6 lỗi dữ liệu thực tế
+    └── 7. Phục hồi an toàn & Đối chiếu (Repair)        -> Tái tạo từ Raw & Báo cáo 3 trạng thái
 ```
 
 ### 2.2. Cơ chế 2 chế độ (Dual-Mode Flexibility):
-- 🟢 **Chế độ Dev / Offline (Khuyến nghị khi test):** Pipeline tự động nạp từ file snapshot có sẵn tại `data/raw/crossref_response.json` (giúp bạn làm bài mượt mà ngay cả khi không có mạng hoặc khi API Crossref bị quá tải `429 Too Many Requests`).
-- 🌐 **Chế độ Live API:** Khi cần dữ liệu mới nhất, pipeline kết nối trực tiếp đến Crossref REST API.
+- 🟢 **Chế độ Dev / Offline (Khuyến nghị khi làm bài):** Pipeline tự động nạp từ file snapshot có sẵn tại `data/raw/crossref_response.json` (giúp bạn làm bài mượt mà ngay cả khi không có mạng hoặc khi API Crossref bị quá tải `429 Too Many Requests`).
+- 🌐 **Chế độ Live API:** Khi cần dữ liệu mới nhất từ Internet, pipeline kết nối trực tiếp đến Crossref REST API.
 
 ---
 
