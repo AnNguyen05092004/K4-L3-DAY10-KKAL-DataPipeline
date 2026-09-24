@@ -31,7 +31,7 @@ Trong kỹ thuật phần mềm truyền thống, nếu một hàm gặp lỗi, 
 ---
 
 ### 🎯 Sứ mệnh của bạn trong bài Lab này:
-Thực tế sản phẩm AI: **60% – 80% thời gian của một dự án AI là xử lý dữ liệu, không phải tinh chỉnh model!** *"Garbage In $\rightarrow$ Garbage Out"* (Dữ liệu rác vào thì kết quả rác ra). 
+Thực tế sản phẩm AI: **60% – 80% thời gian của một dự án AI là xử lý dữ liệu, không phải tinh chỉnh model!** *"Garbage In -> Garbage Out"* (Dữ liệu rác vào thì kết quả rác ra). 
 
 Bạn và nhóm sẽ đóng vai trò **Kỹ sư Dữ liệu & MLOps thực chiến**, xây dựng một Data Pipeline chuẩn chỉnh cho dữ liệu bài báo khoa học từ **Crossref Academic API**, tích hợp "chốt kiểm dịch dữ liệu" (**Data Quality Gate**) bằng **Great Expectations 1.x** để chặn đứng dữ liệu xấu trước khi nó kịp lọt vào Vector Store (ChromaDB).
 
