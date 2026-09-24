@@ -135,7 +135,7 @@ Starter Repo được cấu trúc dạng module hóa rõ ràng:
 
 ### Bước 1: Khởi tạo Repo nhóm & Thêm Collaborators
 1. **Trưởng nhóm:**
-   - Fork repo gốc của lớp về tài khoản/tổ chức cá nhân: `https://github.com/VinUni-AI20k/K4_Day10_Data-Pipeline-Data-Observability`.
+   - Fork repo gốc của lớp về tài khoản/tổ chức cá nhân: `https://github.com/VinUni-AI20k/K4-L3A-Day10-Data-Pipeline-Data-Observability`.
    - Đặt tên repo: `K4A-DAY10-GroupXX-TenNhom`.
    - Vào **Settings > Collaborators > Add people** để mời tất cả thành viên trong nhóm.
 2. **Các thành viên:**
