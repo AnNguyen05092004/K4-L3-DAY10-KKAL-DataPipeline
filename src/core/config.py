@@ -25,6 +25,7 @@ class Paths:
     repaired_clean_json: Path
     repaired_embeddings_json: Path
     eval_testset: Path
+    test_set_json: Path
     baseline_metrics: Path
     baseline_answers: Path
     demo_answers: Path
@@ -39,6 +40,7 @@ class Paths:
     corrupted_answers: Path
     repaired_metrics: Path
     repaired_answers: Path
+    repair_verification: Path
     comparison_report: Path
 
 
@@ -95,6 +97,7 @@ def load_settings(project_dir: Path | None = None) -> Settings:
         repaired_clean_json=data_dir / "clean" / "papers_clean_repaired.json",
         repaired_embeddings_json=data_dir / "embeddings" / "papers_embeddings_repaired.json",
         eval_testset=data_dir / "eval" / "test_set.json",
+        test_set_json=data_dir / "eval" / "test_set.json",
         baseline_metrics=data_dir / "results" / "baseline_metrics.json",
         baseline_answers=data_dir / "results" / "baseline_answers.json",
         demo_answers=data_dir / "results" / "agent_demo_answers.json",
@@ -109,6 +112,7 @@ def load_settings(project_dir: Path | None = None) -> Settings:
         corrupted_answers=data_dir / "results" / "corrupted_answers.json",
         repaired_metrics=data_dir / "results" / "repaired_metrics.json",
         repaired_answers=data_dir / "results" / "repaired_answers.json",
+        repair_verification=data_dir / "results" / "repair_verification.json",
         comparison_report=data_dir / "reports" / "corruption_report.md",
     )
 

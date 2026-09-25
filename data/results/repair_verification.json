@@ -1,0 +1,9 @@
+{
+  "source": "data\\raw\\crossref_records.json",
+  "baseline_sha256": "1c008e237438de27025b9a6cd29f8bb812085a368e7cbc4a277cf9bb4198bdb3",
+  "first_repair_sha256": "1c008e237438de27025b9a6cd29f8bb812085a368e7cbc4a277cf9bb4198bdb3",
+  "second_repair_sha256": "1c008e237438de27025b9a6cd29f8bb812085a368e7cbc4a277cf9bb4198bdb3",
+  "idempotent": true,
+  "matches_baseline": true,
+  "rows": 24
+}

@@ -1,0 +1,76 @@
+{
+  "drop_latest_records": {
+    "count": 5,
+    "fraction": 0.2,
+    "paper_ids": [
+      "10.21203/rs.3.rs-10489777/v1",
+      "10.70267/aitia.2026482489",
+      "10.21203/rs.3.rs-10349437/v1",
+      "10.54254/2755-2721/2026.36624",
+      "10.36887/2415-8453-2026-3-2"
+    ],
+    "description": "Removed the newest papers before indexing."
+  },
+  "blank_summary": {
+    "count": 5,
+    "paper_ids": [
+      "10.1007/s10278-026-02086-9",
+      "10.1093/sleep/zsag091.0346",
+      "10.20944/preprints202604.0339.v1",
+      "10.20944/preprints202608.1849.v1",
+      "10.21079/11681/50309"
+    ],
+    "description": "Replaced selected summaries with empty strings."
+  },
+  "inject_text_noise": {
+    "count": 4,
+    "paper_ids": [
+      "10.2118/234689-pa",
+      "10.21203/rs.3.rs-10012178/v1",
+      "10.21203/rs.3.rs-10178277/v1",
+      "10.21203/rs.3.rs-10423755/v1"
+    ],
+    "noise": "###GARBAGE### %%%$$$",
+    "description": "Injected meaningless tokens into text_for_embedding."
+  },
+  "truncate_title": {
+    "count": 5,
+    "max_characters": 7,
+    "paper_ids": [
+      "10.1007/s10278-026-02086-9",
+      "10.1093/sleep/zsag091.0346",
+      "10.20944/preprints202604.0339.v1",
+      "10.20944/preprints202608.1849.v1",
+      "10.21079/11681/50309"
+    ],
+    "description": "Truncated selected titles to fewer than ten characters."
+  },
+  "stale_date": {
+    "count": 4,
+    "years_shifted": 5,
+    "paper_ids": [
+      "10.28932/jutisi.v12i2.13099",
+      "10.21203/rs.3.rs-10423755/v1",
+      "10.20944/preprints202608.1849.v1",
+      "10.3390/knowledge6030022"
+    ],
+    "description": "Shifted selected publication dates five years into the past."
+  },
+  "duplicate_rows": {
+    "count": 5,
+    "paper_ids": [
+      "10.28932/jutisi.v12i2.13099",
+      "10.21203/rs.3.rs-10423755/v1",
+      "10.20944/preprints202608.1849.v1",
+      "10.3390/knowledge6030022",
+      "10.36948/ijfmr.2026.v08i04.85777"
+    ],
+    "description": "Appended duplicate records while preserving the original row count after the drop scenario."
+  },
+  "summary": {
+    "scenario_count": 6,
+    "rows_before": 24,
+    "rows_after": 24,
+    "unique_paper_ids_after": 19
+  }
+}
