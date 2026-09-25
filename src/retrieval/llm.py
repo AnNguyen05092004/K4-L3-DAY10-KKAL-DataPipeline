@@ -50,4 +50,8 @@ def build_llm(settings: Settings, temperature: float = 0.0):
             base_url=settings.custom_llm_base_url,
             temperature=temperature,
         )
+    if provider == "mock":
+        from langchain_core.language_models.fake_chat_models import FakeListChatModel
+
+        return FakeListChatModel(responses=["This is a mock response from the scholarly corpus."])
     raise RuntimeError(f"Unsupported LLM provider: {settings.llm_provider}")

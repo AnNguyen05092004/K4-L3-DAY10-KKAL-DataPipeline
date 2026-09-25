@@ -13,7 +13,7 @@
 | :--- | :--- | :--- | :--- | :--- |
 | **CP0** | Khởi tạo môi trường, cấu hình `.env`, Ingestion raw data | 0 - 30m (30') | Môi trường venv kích hoạt, file `.env` hợp lệ, 2 raw JSON artifacts | Console in `Môi trường sẵn sàng`, tải đủ 24 bài báo |
 | **CP1** | Data Cleaning & Data Observability với Great Expectations 1.x & Freshness | 30m - 65m (35') | `src/ingestion/cleaning.py`, `src/observability/quality.py`, cleaned dataframe & GX suite | Clean dataframe 24 dòng có `text_for_embedding`, GX 1.x `success=True` |
-| **CP2** | Benchmark Test Set & ChromaDB Vector Store Indexing | 65m - 95m (30') | `src/evaluation/testset.py`, ChromaDB collection `papers-baseline` | Sinh bộ test set, ChromaDB index 24 docs |
+| **CP2** | Benchmark Test Set & ChromaDB Vector Store Indexing | 65m - 95m (30') | `src/evaluation/testset.py`, ChromaDB collection `papers-baseline` | Sinh bộ test set (10 câu), ChromaDB index 24 docs |
 | **CP3** | Baseline Pipeline End-to-End & Báo Cáo Pha 1 | 95m - 120m (25') | `script/run_phase1.py`, `baseline_metrics.json`, `phase1_report.md` | Phase 1 sinh báo cáo markdown và baseline Hit Rate |
 | **CP4** | Synthetic Data Corruption Suite & Đo Lường Suy Giảm | 120m - 165m (45') | `src/ingestion/corruption.py`, `corruption_log.json`, `corrupted_metrics.json` | Tiêm 6 lỗi dữ liệu, đo lường sự sụt giảm của RAG |
 | **CP5** | Idempotent Repair & Báo Cáo Đối Chiếu 3 Trạng Thái | 165m - 210m (45') | `run_corruption_flow.py`, `corruption_report.md`, `repaired_metrics.json` | Bảng so sánh 3 trạng thái: Baseline vs Corrupted vs Repaired |
@@ -70,9 +70,9 @@
   3. Khởi tạo ChromaDB collection `papers-baseline`, nạp vector embedding sinh từ `all-MiniLM-L6-v2` cho toàn bộ các tài liệu sạch.
 - **Tín hiệu nghiệm thu:**
   ```bash
-  python -c "from core.config import load_settings; from evaluation.testset import load_or_create_test_set; import pandas as pd; s=load_settings(); df=pd.read_json(s.paths.clean_json); ts=load_or_create_test_set(df, s.paths.test_set_json); print(f'Tín hiệu hoàn thành: Test set gồm {len(ts.samples)} câu hỏi')"
+  python -c "from core.config import load_settings; from evaluation.testset import build_test_set; import pandas as pd; s=load_settings(); df=pd.read_json(s.paths.clean_json); ts=build_test_set(df, s.paths.eval_testset); print(f'Tín hiệu hoàn thành: Sinh được {len(ts)} câu hỏi test')"
   ```
-  Console in ra `Tín hiệu hoàn thành: Test set gồm 5 câu hỏi`.
+  Console in ra `Tín hiệu hoàn thành: Sinh được 10 câu hỏi test`.
 
 ---
 

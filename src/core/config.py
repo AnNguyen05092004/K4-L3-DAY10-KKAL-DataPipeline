@@ -30,6 +30,8 @@ class Paths:
     demo_answers: Path
     quality_dir: Path
     gx_dir: Path
+    baseline_quality_report: Path
+    corrupted_quality_report: Path
     freshness_report: Path
     baseline_report: Path
     corruption_log: Path
@@ -98,6 +100,8 @@ def load_settings(project_dir: Path | None = None) -> Settings:
         demo_answers=data_dir / "results" / "agent_demo_answers.json",
         quality_dir=data_dir / "quality",
         gx_dir=data_dir / "quality" / "gx",
+        baseline_quality_report=data_dir / "quality" / "baseline_quality_report.json",
+        corrupted_quality_report=data_dir / "quality" / "corrupted_quality_report.json",
         freshness_report=data_dir / "quality" / "freshness_report.json",
         baseline_report=data_dir / "reports" / "phase1_report.md",
         corruption_log=data_dir / "results" / "corruption_log.json",
@@ -162,12 +166,12 @@ def require_llm_credentials(settings: Settings) -> None:
         if settings.openrouter_api_key:
             return
         raise RuntimeError("OPENROUTER_API_KEY is required when LLM_PROVIDER=openrouter.")
-    if provider == "ollama":
+    if provider in {"mock", "ollama"}:
         return
     if provider == "custom":
         if settings.custom_llm_base_url:
             return
         raise RuntimeError("CUSTOM_LLM_BASE_URL is required when LLM_PROVIDER=custom.")
     raise RuntimeError(
-        "Unsupported LLM_PROVIDER. Expected one of: openai, gemini, anthropic, openrouter, ollama, custom."
+        "Unsupported LLM_PROVIDER. Expected one of: openai, gemini, anthropic, openrouter, ollama, custom, mock."
     )

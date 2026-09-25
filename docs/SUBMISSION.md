@@ -41,7 +41,7 @@ K4-L3-DAY10-TenNhom-DataPipeline/
 │   │   └── papers_clean.json
 │   ├── chroma/                              <- Vector Database ChromaDB (chứa 3 collections tách biệt)
 │   ├── eval/
-│   │   └── test_set.json                    <- Bộ 5 câu hỏi benchmark cố định
+│   │   └── test_set.json                    <- Bộ 10 câu hỏi benchmark cố định
 │   ├── quality/
 │   │   ├── baseline_quality_report.json     <- Báo cáo GX 1.x cho dữ liệu sạch (Pass)
 │   │   ├── corrupted_quality_report.json    <- Báo cáo GX 1.x khi bị tiêm lỗi (Fail)
@@ -58,6 +58,9 @@ K4-L3-DAY10-TenNhom-DataPipeline/
 │   ├── run_phase1.py                        <- Entrypoint chạy Pha 1
 │   └── run_corruption_flow.py               <- Entrypoint chạy Pha 2
 ├── src/                                     <- Toàn bộ code hoàn thiện trong core/, ingestion/, retrieval/, evaluation/, observability/, pipelines/
+├── report/                                  <- Báo cáo tổng kết nhóm và cá nhân
+│   ├── group_report.md                      <- Báo cáo kết quả chung của nhóm
+│   └── <MSSV>_HoTen.md                      <- Báo cáo vai trò cá nhân của từng thành viên
 ├── docs/                                    <- Thư mục tài liệu hướng dẫn và quy chuẩn
 │   ├── Guide.md                             <- Hướng dẫn kỹ thuật chi tiết
 │   ├── CHECKPOINTS.md                       <- Lộ trình 7 checkpoints và cách tự kiểm tra
